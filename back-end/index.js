@@ -11,8 +11,8 @@ app.get('/', (req, res) => res.send('Hello World!'));
 
 app.get('/tasks', taskController.getAll);
 app.get('/tasks/:id', taskController.getById);
-app.post('/tasks', taskController.create);
-app.put('/tasks/:id', taskController.update);
+app.post('/tasks', middlewares.validateTask, taskController.create);
+app.put('/tasks/:id', middlewares.validateTask, taskController.update);
 app.delete('/tasks/:id', taskController.deleteTask);
 
 app.use(middlewares.errorMiddleware);
