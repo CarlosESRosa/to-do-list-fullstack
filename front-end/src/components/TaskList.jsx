@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import myData from '../mockDB';
+// import myData from '../mockDB';
 
 function TaskList() {
   const [allTasks, setAllTasks] = useState([]);
+
+  const fetchApi = async () => {
+    console.log('test');
+    const data = await fetch('http://localhost:3000/tasks');
+    console.log(data);
+    setAllTasks(data);
+  };
+
   useEffect(() => {
-    setAllTasks(myData);
+    fetchApi();
   }, []);
 
   const addTask = () => {
