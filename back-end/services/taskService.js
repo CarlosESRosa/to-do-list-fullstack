@@ -22,8 +22,26 @@ const create = async (text) => {
   return newTask;
 };
 
+const update = async (id, text) => {
+  const verifyTask = await taskModel.getById(id);
+
+  if (verifyTask.length === 0) throw errorHandler(404, 'Task not found');
+
+  const result = await taskModel.update(id, text);
+
+  return result;
+};
+
+const deleteTask = async (id) => {
+  const result = await taskModel.deleteTask(id);
+  if (result.affectedRows === 0) throw errorHandler(404, 'Task not found');
+  return result;
+};
+
 module.exports = {
   getAll,
   getById,
   create,
+  update,
+  deleteTask,
 };

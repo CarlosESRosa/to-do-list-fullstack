@@ -36,8 +36,36 @@ const create = async (req, res, next) => {
   }
 };
 
+const update = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { text } = req.body;
+
+    const result = await taskService.update(id, text);
+
+    res.status(200).json(result);
+  } catch (error) {
+    console.log('Update task:', error.message);
+    next(error);
+  }
+};
+
+const deleteTask = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    await taskService.deleteTask(id);
+    res.status(204).json();
+  } catch (error) {
+    console.log('Delete task:', error.message);
+    next(error);
+  }
+};
+
 module.exports = {
   getAll,
   getById,
   create,
+  update,
+  deleteTask,
 };
