@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import myData from '../mockDB';
+import fetchAPI from '../helpers/fetchApi';
+// import myData from '../mockDB';
 
 function TaskList() {
   const [allTasks, setAllTasks] = useState([]);
+
+  const fetchData = async () => {
+    const data = await fetchAPI();
+    setAllTasks(data);
+  };
+
   useEffect(() => {
-    setAllTasks(myData);
+    fetchData();
   }, []);
 
   const addTask = () => {
@@ -22,13 +29,13 @@ function TaskList() {
   return (
     <>
       <h1>ToDo List</h1>
-      {allTasks.map((element) => (
+      { allTasks.map((element) => (
         <div key={element.id}>
-          <h1>{element.task}</h1>
+          <h1>{element.text}</h1>
           <button type="button" onClick={() => deleteTask()}>DELETE</button>
           <button type="button" onClick={() => updateTask()}>UPDATE</button>
         </div>
-      ))}
+      )) }
       <button type="button" onClick={() => addTask()}>ADD</button>
     </>
   );
