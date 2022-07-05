@@ -5,8 +5,9 @@ import './App.css';
 function App() {
   return (
     <div>
-      <TaskList />
-      <h1>Main</h1>
+      <div className="container">
+        <TaskList />
+      </div>
     </div>
   );
 }
