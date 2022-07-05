@@ -4,7 +4,7 @@ const cors = require('cors');
 const app = express();
 app.use(cors());
 app.use(express.json());
-const port = 3000;
+const PORT = process.env.PORT || 3000;
 
 const middlewares = require('./middlewares');
 const taskController = require('./controllers/taskController');
@@ -19,6 +19,6 @@ app.delete('/tasks/:id', taskController.deleteTask);
 
 app.use(middlewares.errorMiddleware);
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`));
 
 // teste heroku
