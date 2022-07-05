@@ -1,0 +1,50 @@
+version: '3.9'
+
+services: # cada servico é um container
+  backend:
+    build: ./backend
+    container_name: 'app_backend'
+    platform: linux/amd64
+    ports:
+      - 3001:3001
+    volumes:
+      - ./backend:/app/back
+    environment:
+      - PORT=3001
+      - DB_USER=root
+      - DB_PASS=123456
+      - DB_HOST=dataDb
+      - DB_NAME=ToDoList
+      - DB_PORT=3306
+    healthcheck:
+      test: ["CMD", "lsof", "-t", "-i:3001"] # Caso utilize outra porta interna para o back, altere ela aqui também
+      timeout: 10s
+      retries: 5
+    depends_on:
+      dataDb:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    container_name: 'app_frontend'
+    platform: linux/amd64
+    ports:
+      - 3000:3000
+
+    command: npm start
+
+  dataDb:
+    image: mysql:8.0.21
+    container_name: "mysql_db"
+    platform: linux/amd64
+    ports:
+      - 3004:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+    restart: 'always'
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"] # Deve aguardar o banco ficar operacional
+      timeout: 10s
+      retries: 5
+    cap_add:
+      - SYS_NICE # Deve omitir alertas menores
